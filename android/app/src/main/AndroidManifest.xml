@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.shiftlog_v2">
+  package="com.shiftlog">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

@@ -4,7 +4,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 platform :ios, '12.4'
 install! 'cocoapods', :deterministic_uuids => false
 
-target 'shiftlog_v2' do
+target 'shiftlog' do
   config = use_native_modules!
 
   # Flags change depending on the env values.
@@ -26,7 +26,7 @@ target 'shiftlog_v2' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'shiftlog_v2Tests' do
+  target 'shiftlogTests' do
     inherit! :complete
     # Pods for testing
   end

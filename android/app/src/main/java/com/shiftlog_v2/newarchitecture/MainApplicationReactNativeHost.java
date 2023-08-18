@@ -1,4 +1,4 @@
-package com.shiftlog_v2.newarchitecture;
+package com.shiftlog.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.shiftlog_v2.BuildConfig;
-import com.shiftlog_v2.newarchitecture.components.MainComponentsRegistry;
-import com.shiftlog_v2.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.shiftlog.BuildConfig;
+import com.shiftlog.newarchitecture.components.MainComponentsRegistry;
+import com.shiftlog.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

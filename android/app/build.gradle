@@ -78,8 +78,10 @@ import org.apache.tools.ant.taskdefs.condition.Os
  * ]
  */
 
+
 project.ext.react = [
     enableHermes: true,  // clean and rebuild if changing
+    entryFile: "index.js",
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -135,7 +137,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.shiftlog_v2"
+        applicationId "com.shiftlog"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

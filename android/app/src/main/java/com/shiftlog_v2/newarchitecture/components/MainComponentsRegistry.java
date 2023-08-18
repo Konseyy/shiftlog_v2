@@ -1,4 +1,4 @@
-package com.shiftlog_v2.newarchitecture.components;
+package com.shiftlog.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

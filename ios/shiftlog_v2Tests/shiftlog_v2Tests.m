@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface shiftlog_v2Tests : XCTestCase
+@interface shiftlogTests : XCTestCase
 
 @end
 
-@implementation shiftlog_v2Tests
+@implementation shiftlogTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {
