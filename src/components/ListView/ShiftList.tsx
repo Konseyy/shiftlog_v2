@@ -7,14 +7,14 @@ type Props = {};
 
 const ShiftList = ({}: Props) => {
   const shiftEntries = useShiftStore(state => state.list);
-  const shiftEntriesArray = useMemo(
-    () => Object.values(shiftEntries).sort((a, b) => a.startDate - b.startDate),
+  const sortedShifts = useMemo(
+    () => Object.values(shiftEntries).sort((a, b) => b.startDate - a.startDate),
     [shiftEntries],
   );
   return (
-    <ScrollView contentContainerStyle={{ padding: 10 }}>
-      {shiftEntriesArray.map(entry => {
-        return <ShiftListItem key={entry.id} entry={entry} />;
+    <ScrollView contentContainerStyle={{ paddingTop: 15 }}>
+      {sortedShifts.map((entry, idx) => {
+        return <ShiftListItem key={entry.id} entry={entry} idx={idx} />;
       })}
     </ScrollView>
   );

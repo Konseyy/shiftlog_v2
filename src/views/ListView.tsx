@@ -2,14 +2,14 @@ import React, { memo } from 'react';
 import { SafeAreaView } from 'react-native';
 import ShiftList from '../components/ListView/ShiftList';
 import ListHeader from '../components/ListView/ListHeader';
-import AddEntry from '../components/ListView/AddEntry';
+import AddEntryButton from '../components/ListView/AddEntryButton';
 
 const ListView = memo(() => {
   return (
     <SafeAreaView style={{ flex: 1, position: 'relative' }}>
       <ListHeader />
       <ShiftList />
-      <AddEntry />
+      <AddEntryButton />
     </SafeAreaView>
   );
 });

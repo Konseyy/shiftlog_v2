@@ -1,38 +1,27 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { Button, HStack } from 'native-base';
 import React, { memo } from 'react';
-import { Pressable, Text, View } from 'react-native';
 type Props = {} & BottomTabBarProps;
 
 const NavigationFooter = memo((props: Props) => {
   const activeRoute = props.state.routes[props.state.index].name;
   return (
-    <View
-      style={{
-        flexGrow: 0,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginHorizontal: 15,
-      }}>
+    <HStack>
       {props.state.routes.map(route => {
+        const routeActive = route.name === activeRoute;
         return (
-          <Pressable
+          <Button
+            variant={routeActive ? 'solid' : 'outline'}
+            style={{ flexGrow: 1, borderRadius: 0 }}
+            size="sm"
+            colorScheme={'info'}
             key={route.key}
-            style={{
-              paddingHorizontal: 10,
-              paddingVertical: 5,
-              borderWidth: 1,
-              borderRadius: 10,
-              marginBottom: 5,
-            }}
             onPress={() => props.navigation.navigate(route.name)}>
-            <Text
-              style={{ color: route.name === activeRoute ? 'blue' : 'black' }}>
-              {route.name}
-            </Text>
-          </Pressable>
+            {route.name}
+          </Button>
         );
       })}
-    </View>
+    </HStack>
   );
 });
 
