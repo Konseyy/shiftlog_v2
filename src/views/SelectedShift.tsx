@@ -5,11 +5,19 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import React, { memo, useEffect, useState } from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
+import { SafeAreaView, Text, View, Alert as NativeAlert } from 'react-native';
 import { ShiftStackParamList } from '../types/views';
 import { useShiftStore } from '../zustand/shiftStore';
-import SaveButton from '../components/SelectedEntry/SaveButton';
-import { Alert, Center, HStack, useToast } from 'native-base';
+import {
+  Alert,
+  Button,
+  Center,
+  CheckIcon,
+  CloseIcon,
+  HStack,
+  useToast,
+} from 'native-base';
+import { ShiftEntryInState } from '../types/shifts';
 
 const SelectedShift = memo(() => {
   const toast = useToast();
@@ -23,6 +31,7 @@ const SelectedShift = memo(() => {
   });
   const addEntry = useShiftStore(state => state.addEntry);
   const updateEntry = useShiftStore(state => state.updateEntry);
+  const removeEntry = useShiftStore(state => state.removeEntry);
 
   const [startDate, setStartDate] = useState(
     selectedEntry !== undefined ? selectedEntry.startDate : Date.now(),
@@ -74,6 +83,29 @@ const SelectedShift = memo(() => {
     });
   };
 
+  const onDelete = (entry: ShiftEntryInState) => {
+    NativeAlert.alert(
+      'Delete entry?',
+      `Are you sure you want to delete the entry starting at ${new Date(
+        entry.startDate,
+      ).toLocaleString('en-GB')}?`,
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            removeEntry(entry.id);
+            navigation.navigate('List');
+          },
+        },
+      ],
+    );
+  };
+
   useEffect(() => {
     navigation.setOptions({ title: headerText });
   }, [headerText, navigation]);
@@ -98,7 +130,22 @@ const SelectedShift = memo(() => {
           <Text>{description}</Text>
         </View>
       </View>
-      <SaveButton onPress={onSave} />
+      <Button
+        style={{ position: 'absolute', bottom: 10, right: 10, padding: 5 }}
+        colorScheme={'info'}
+        onPress={onSave}
+        rightIcon={<CheckIcon />}>
+        Save
+      </Button>
+      {selectedEntry !== undefined && (
+        <Button
+          style={{ position: 'absolute', bottom: 10, left: 10, padding: 5 }}
+          colorScheme={'error'}
+          onPress={() => onDelete(selectedEntry)}
+          leftIcon={<CloseIcon />}>
+          Delete
+        </Button>
+      )}
     </SafeAreaView>
   );
 });
