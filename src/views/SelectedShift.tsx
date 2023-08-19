@@ -8,19 +8,11 @@ import React, { memo, useEffect, useState } from 'react';
 import { SafeAreaView, Text, View, Alert as NativeAlert } from 'react-native';
 import { ShiftStackParamList } from '../types/views';
 import { useShiftStore } from '../zustand/shiftStore';
-import {
-  Alert,
-  Button,
-  Center,
-  CheckIcon,
-  CloseIcon,
-  HStack,
-  useToast,
-} from 'native-base';
 import { ShiftEntryInState } from '../types/shifts';
+import { Button } from 'tamagui';
+import { Check, Delete } from '@tamagui/lucide-icons';
 
 const SelectedShift = memo(() => {
-  const toast = useToast();
   const route = useRoute<RouteProp<ShiftStackParamList, 'Selected'>>();
   const navigation =
     useNavigation<NavigationProp<ShiftStackParamList, 'Selected'>>();
@@ -66,21 +58,7 @@ const SelectedShift = memo(() => {
       });
     }
     navigation.navigate('List');
-    toast.show({
-      placement: 'top',
-      render: () => {
-        return (
-          <Alert variant={'left-accent'} status="success">
-            <HStack>
-              <Center>
-                <Alert.Icon />
-              </Center>
-              <Text style={{ marginLeft: 5 }}>Saved successfully</Text>
-            </HStack>
-          </Alert>
-        );
-      },
-    });
+    // TODO: Show success toast
   };
 
   const onDelete = (entry: ShiftEntryInState) => {
@@ -132,17 +110,15 @@ const SelectedShift = memo(() => {
       </View>
       <Button
         style={{ position: 'absolute', bottom: 10, right: 10, padding: 5 }}
-        colorScheme={'info'}
         onPress={onSave}
-        rightIcon={<CheckIcon />}>
+        icon={<Check />}>
         Save
       </Button>
       {selectedEntry !== undefined && (
         <Button
           style={{ position: 'absolute', bottom: 10, left: 10, padding: 5 }}
-          colorScheme={'error'}
           onPress={() => onDelete(selectedEntry)}
-          leftIcon={<CloseIcon />}>
+          icon={<Delete />}>
           Delete
         </Button>
       )}

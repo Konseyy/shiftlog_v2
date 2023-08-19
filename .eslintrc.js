@@ -13,6 +13,7 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': 'warn',
         'react-native/no-inline-styles': 'off',
         curly: 'off',
+        'no-unreachable': 'warn',
       },
     },
   ],

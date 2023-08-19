@@ -19,7 +19,8 @@ import SettingsView from './views/SettingsView';
 import { RootStackParamList, ShiftStackParamList } from './types/views';
 import { useShiftStore } from './zustand/shiftStore';
 import NavigationFooter from './components/common/NavigationFooter';
-import { NativeBaseProvider } from 'native-base';
+import tamaguiConfig from '../tamagui.config';
+import { TamaguiProvider } from 'tamagui';
 
 const Tabs = createBottomTabNavigator<RootStackParamList>();
 
@@ -54,7 +55,7 @@ const Root = () => {
   }, [loadState]);
 
   return (
-    <NativeBaseProvider>
+    <TamaguiProvider config={tamaguiConfig}>
       <NavigationContainer>
         <Tabs.Navigator
           initialRouteName="Shifts"
@@ -67,7 +68,7 @@ const Root = () => {
           <Tabs.Screen name="Settings" component={SettingsView} />
         </Tabs.Navigator>
       </NavigationContainer>
-    </NativeBaseProvider>
+    </TamaguiProvider>
   );
 };
 
