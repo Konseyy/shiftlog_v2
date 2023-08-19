@@ -2,13 +2,17 @@ import React, { memo, useCallback } from 'react';
 import { Text, TouchableOpacity, View, Alert } from 'react-native';
 import { ShiftEntryInState } from '../../types/shifts';
 import { useShiftStore } from '../../zustand/shiftStore';
+import { ShiftStackParamList } from '../../types/views';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {
   entry: ShiftEntryInState;
-  onEdit: (id: string) => void;
 };
 
-const ShiftListItem = memo(({ entry, onEdit }: Props) => {
+const ShiftListItem = memo(({ entry }: Props) => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<ShiftStackParamList, 'List'>>();
   const removeShift = useShiftStore(state => state.removeEntry);
   const persistShifts = useShiftStore(state => state.saveEntries);
 
@@ -20,7 +24,11 @@ const ShiftListItem = memo(({ entry, onEdit }: Props) => {
     [removeShift, persistShifts],
   );
   return (
-    <View key={entry.id}>
+    <View
+      key={entry.id}
+      style={{
+        paddingVertical: 10,
+      }}>
       <TouchableOpacity
         onLongPress={() => {
           Alert.alert(
@@ -29,7 +37,9 @@ const ShiftListItem = memo(({ entry, onEdit }: Props) => {
             [
               {
                 text: 'Edit',
-                onPress: () => onEdit(entry.id),
+                onPress: () => {
+                  navigation.navigate('Selected', { id: entry.id });
+                },
               },
               {
                 text: 'Delete',
@@ -57,8 +67,6 @@ const ShiftListItem = memo(({ entry, onEdit }: Props) => {
         <Text>id: {entry.id}</Text>
         <Text>start: {entry.startDate}</Text>
         <Text>end: {entry.endDate}</Text>
-        <Text>break: {entry.breakDuration}</Text>
-        <Text>notes: {entry.description}</Text>
       </TouchableOpacity>
     </View>
   );

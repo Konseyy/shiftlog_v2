@@ -7,5 +7,5 @@ export type RootStackParamList = {
 export type ShiftStackParamList = {
   List: undefined;
   // undefined for add, string `id` for edit
-  Add: undefined | { id: string };
+  Selected: undefined | { id: string };
 };

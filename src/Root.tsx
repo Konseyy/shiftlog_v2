@@ -8,16 +8,20 @@
  * @format
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import ListView from './views/ListView';
-import AddShiftView from './views/AddShiftView';
+import SelectedEntry from './views/SelectedEntry';
 import ExportView from './views/ExportView';
 import SettingsView from './views/SettingsView';
 import { RootStackParamList, ShiftStackParamList } from './types/views';
+import { useShiftStore } from './zustand/shiftStore';
+import { Text } from 'react-native';
+import NavigationFooter from './components/common/NavigationFooter';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Tabs = createBottomTabNavigator<RootStackParamList>();
 
 const ShiftStack = createNativeStackNavigator<ShiftStackParamList>();
 
@@ -29,23 +33,31 @@ const ShiftStackCompoenent = memo(() => {
         headerShown: false,
       }}>
       <ShiftStack.Screen name="List" component={ListView} />
-      <ShiftStack.Screen name="Add" component={AddShiftView} />
+      <ShiftStack.Screen name="Selected" component={SelectedEntry} />
     </ShiftStack.Navigator>
   );
 });
 
 const Root = () => {
+  const loadState = useShiftStore(state => state.loadSavedEntries);
+
+  useEffect(() => {
+    // Load state from storage on mount
+    loadState();
+  }, [loadState]);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator
+      <Tabs.Navigator
         initialRouteName="Shifts"
+        tabBar={props => <NavigationFooter {...props} />}
         screenOptions={{
           headerShown: false,
         }}>
-        <Stack.Screen name="Shifts" component={ShiftStackCompoenent} />
-        <Stack.Screen name="Export" component={ExportView} />
-        <Stack.Screen name="Settings" component={SettingsView} />
-      </Stack.Navigator>
+        <Tabs.Screen name="Shifts" component={ShiftStackCompoenent} />
+        <Tabs.Screen name="Export" component={ExportView} />
+        <Tabs.Screen name="Settings" component={SettingsView} />
+      </Tabs.Navigator>
     </NavigationContainer>
   );
 };
