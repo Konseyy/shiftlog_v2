@@ -1,24 +1,25 @@
 import React, { memo, useMemo } from 'react';
-import { Text, View, Alert, Pressable } from 'react-native';
+import { Text, View, Alert } from 'react-native';
 import { ShiftEntryInState } from '../../types/shifts';
 import { useShiftStore } from '../../zustand/shiftStore';
 import { ShiftStackParamList } from '../../types/views';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import { Accordion } from 'tamagui';
+import SimpleAccordion from '../common/SimpleAccordion';
 
 type Props = {
-  entry: ShiftEntryInState;
-  idx: number;
+  entryId: ShiftEntryInState['id'];
+  idx: 'even' | 'odd';
 };
 
-const evenBgOpacity = 0.08;
-const oddBgOpacity = 0;
+const evenBgOpacity = 0.07;
+const oddBgOpacity = 0.02;
 
-const ShiftListItem = memo(({ entry, idx }: Props) => {
+const ShiftListItem = memo(({ entryId, idx }: Props) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<ShiftStackParamList, 'List'>>();
   const removeShift = useShiftStore(state => state.removeEntry);
+  const entry = useShiftStore(state => state.list[entryId]);
 
   const onHold = () => {
     Alert.alert(
@@ -77,68 +78,62 @@ const ShiftListItem = memo(({ entry, idx }: Props) => {
   );
 
   return (
-    <Pressable key={entry.id} style={{}} onLongPress={onHold}>
-      {({}) => {
-        return (
-          <Accordion.Item value={entry.id}>
-            <Accordion.Trigger>
-              {({ open }: { open: boolean }) => {
-                return (
-                  <View
-                    style={{
-                      paddingVertical: open ? 15 : 10,
-                      paddingHorizontal: 15,
-                      backgroundColor:
-                        idx % 2 === 0
-                          ? `rgba(0,0,0,${evenBgOpacity})`
-                          : `rgba(0,0,0,${oddBgOpacity})`,
-                    }}>
-                    <View style={{ flex: 1, flexDirection: 'row' }}>
-                      <View style={{ flex: 1, alignItems: 'center' }}>
-                        <Text>
-                          {startDateObj.toLocaleTimeString('en-GB', {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })}
-                        </Text>
-                        <Text>{startDateObj.toLocaleDateString('en-GB')}</Text>
-                      </View>
-                      <View style={{ flex: 1, alignItems: 'center' }}>
-                        <Text>
-                          {endDateObj.toLocaleTimeString('en-GB', {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })}
-                        </Text>
-                        <Text>{endDateObj.toLocaleDateString('en-GB')}</Text>
-                      </View>
-                      <View>
-                        <Text>
-                          {difference.hours}h {difference.minutes}m
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                );
-              }}
-            </Accordion.Trigger>
-            <Accordion.Content>
-              <View style={{ marginTop: 5 }}>
-                <View>
-                  <Text>id: {entry.id}</Text>
-                </View>
-                <View>
-                  <Text>break: {entry.breakDuration}</Text>
-                </View>
-                <View>
-                  <Text>description: {entry.description}</Text>
-                </View>
-              </View>
-            </Accordion.Content>
-          </Accordion.Item>
-        );
-      }}
-    </Pressable>
+    <SimpleAccordion
+      onLongPress={onHold}
+      container={({ expanded, children }) => (
+        <View
+          style={{
+            paddingVertical: expanded ? 15 : 10,
+            paddingHorizontal: 15,
+            backgroundColor:
+              idx === 'even'
+                ? `rgba(0,0,0,${evenBgOpacity})`
+                : `rgba(0,0,0,${oddBgOpacity})`,
+          }}>
+          {children}
+        </View>
+      )}
+      summary={({}) => (
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <View style={{ flex: 1, alignItems: 'center' }}>
+            <Text>
+              {startDateObj.toLocaleTimeString('en-GB', {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+            </Text>
+            <Text>{startDateObj.toLocaleDateString('en-GB')}</Text>
+          </View>
+          <View style={{ flex: 1, alignItems: 'center' }}>
+            <Text>
+              {endDateObj.toLocaleTimeString('en-GB', {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+            </Text>
+            <Text>{endDateObj.toLocaleDateString('en-GB')}</Text>
+          </View>
+          <View>
+            <Text>
+              {difference.hours}h {difference.minutes}m
+            </Text>
+          </View>
+        </View>
+      )}
+      details={({}) => (
+        <View style={{ marginTop: 5 }}>
+          <View>
+            <Text>id: {entry.id}</Text>
+          </View>
+          <View>
+            <Text>break: {entry.breakDuration}</Text>
+          </View>
+          <View>
+            <Text>description: {entry.description}</Text>
+          </View>
+        </View>
+      )}
+    />
   );
 });
 
